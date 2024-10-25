@@ -1,0 +1,6 @@
+opencv-python
+picamera2
+adafruit-circuitpython-servokit
+pyttsx3
+face_recognition
+RPi.GPIO
