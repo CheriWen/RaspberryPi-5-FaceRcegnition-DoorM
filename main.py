@@ -6,6 +6,8 @@ from aud_speeking import speak
 import threading
 from concurrent.futures import ThreadPoolExecutor
 import queue
+from rel_control import open_door, close_door_after_delay
+from ser_control import tra_face
 
 # 创建一个线程安全的队列，用于存储人脸识别结果
 result_queue = queue.Queue()
@@ -27,9 +29,6 @@ def face_processing_thread(frame):
 def main():
     load_known_faces()  # 加载已知人脸
 
-    picam2 = Picamera2()  # 创建摄像头实例
-    picam2.start()        # 启动摄像头
-
     try:
         with ThreadPoolExecutor(max_workers=4) as executor:
             while True:
@@ -47,6 +46,7 @@ def main():
                 # 人脸跟踪
                 if face_locations:  # 确保只在有识别结果时调用
                     det_face(face_locations)
+                    tra_face(face_locations)
 
                 # 显示带有人脸位置的帧
                 sho_frame(frame, face_locations)
@@ -62,7 +62,6 @@ def main():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     finally:
-        picam2.close()       # 关闭摄像头
         cv2.destroyAllWindows()  # 清理OpenCV窗口
 
 def handle_recognition_results(names, face_locations, frame):
@@ -70,6 +69,8 @@ def handle_recognition_results(names, face_locations, frame):
     for name in names:
         if name != "Unknown":
             print(f"Hello, {name}!")
+            # 打开门
+            open_door()
             # 将说话操作放入队列，批量处理
             threading.Thread(target=speak, args=(f"Hello, {name}!",)).start()
         else:
