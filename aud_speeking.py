@@ -10,7 +10,7 @@ def speak(text, language='en-us', speed=150):
         speed (int): 语音速度，默认是 150。
     """
     try:
-        # 构造 espeak 命令
+        # Build the command of espeak
         command = f"espeak -v {language} -s {speed} '{text}'"
         os.system(command)
     except Exception as e:

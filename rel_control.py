@@ -2,53 +2,53 @@ import RPi.GPIO as GPIO
 import time
 import threading
 
-# 定义常量管理引脚号
+# Definitions
 RELAY_PIN = 17
-DOOR_OPEN_TIME = 5  # 继电器开启时间，单位为秒
+DOOR_OPEN_TIME = 5  # The time the door stays open in seconds
 
-# GPIO 设置
+# GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(RELAY_PIN, GPIO.OUT)
-GPIO.output(RELAY_PIN, GPIO.LOW)  # 默认关闭继电器
+GPIO.output(RELAY_PIN, GPIO.LOW)  # Close the door initially
 
 def open_door():
     """
-    控制门打开
+    Opens the door
     """
     try:
-        GPIO.output(RELAY_PIN, GPIO.HIGH)  # 打开门
+        GPIO.output(RELAY_PIN, GPIO.HIGH)  # Open the door
         print("Door opened")
         
-        # 启动一个线程来关闭门，避免阻塞主线程
+        # Lauch a separate thread to close the door after a delay
         threading.Thread(target=close_door_after_delay).start()
         
-        return True  # 返回状态表示门已打开
+        return True  # Door opened successfully
     except Exception as e:
         print(f"Error while opening the door: {e}")
-        return False  # 返回状态表示打开门失败
+        return False  # Door opening failed
 
 def close_door_after_delay():
     """
-    延时关闭门
+    Delays the door closing
     """
     time.sleep(DOOR_OPEN_TIME)
-    GPIO.output(RELAY_PIN, GPIO.LOW)  # 关闭门
+    GPIO.output(RELAY_PIN, GPIO.LOW)  # Close the door
     print("Door closed")
 
 def cleanup(clean=False):
     """
-    清理 GPIO 设置
-    clean: 是否清理 GPIO 状态
+    Cleans up the GPIO state
+    clean: States whether to clean up the GPIO state or not
     """
     if clean:
         GPIO.cleanup()
         print("GPIO cleaned up")
 
-# 测试示例
+# Test
 if __name__ == "__main__":
     try:
         open_door()
-        # 其他业务逻辑
-        time.sleep(10)  # 让程序运行一段时间以观察门的状态
+        # Other code
+        time.sleep(10)  # Shit
     finally:
-        cleanup(clean=True)  # 清理 GPIO 状态
+        cleanup(clean=True)  # Clean up the GPIO state

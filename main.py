@@ -9,7 +9,7 @@ import queue
 from rel_control import open_door, close_door_after_delay
 from ser_control import tra_face
 
-# 创建一个线程安全的队列，用于存储人脸识别结果
+# Create a thread-safe queue to store the results of face recognition
 result_queue = queue.Queue()
 
 class CameraError(Exception):
@@ -19,39 +19,41 @@ class IOError(Exception):
     pass
 
 def face_processing_thread(frame):
-    """处理人脸识别并将结果放入队列"""
+    """Put the face recognition result into the queue"""
     try:
         names, face_locations = recognize_faces(frame)
-        result_queue.put((names, face_locations))  # 将结果放入队列
+        result_queue.put((names, face_locations))  # Put the result into the queue
     except Exception as e:
         print(f"Error during face processing: {e}")
 
 def main():
-    load_known_faces()  # 加载已知人脸
+    load_known_faces()  # Load known faces from the database
 
     try:
         with ThreadPoolExecutor(max_workers=4) as executor:
             while True:
-                # 获取摄像头帧
+                # Get a frame from the camera
                 frame = get_frame()
 
-                # 提交人脸识别任务到线程池
+                # Submit the frame to the face recognition thread
                 executor.submit(face_processing_thread, frame)
 
-                # 处理队列中的识别结果（非阻塞）
+                # Process the results from the queue (non-blocking)
                 while not result_queue.empty():
                     names, face_locations = result_queue.get()
                     handle_recognition_results(names, face_locations, frame)
 
-                    # 人脸跟踪
+                    # Trace the face
                     if face_locations:   
+                        #Test if the face is in the database
                         print(face_locations)
+                        
                         det_face(face_locations)
                         
-                # 显示带有人脸位置的帧
+                # Show the frame with the face locations
                 sho_frame(frame, face_locations)
 
-                # 按 'q' 键退出
+                # Press 'q' to quit
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
@@ -65,11 +67,11 @@ def main():
         cv2.destroyAllWindows
 
 def handle_recognition_results(names, face_locations, frame):
-    """处理识别结果"""
+    """Process the results of face recognition"""
     for name in names:
         if name != "Unknown":
             print(f"Hello, {name}!")
-            # 打开门
+            # Open the door
             open_door()
             # 将说话操作放入队列，批量处理
             #threading.Thread(target=speak, args=(f"Hello, {name}!",)).start()

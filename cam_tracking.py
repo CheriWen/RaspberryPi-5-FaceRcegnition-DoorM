@@ -11,7 +11,7 @@ frame_height = 480
 def det_face(face_locations):
     if face_locations:
         '''
-        # 优先选择距离中心点最近的人脸
+        # Choose the face closest to the center of the frame
         center_x = frame_width // 2
         center_y = frame_height // 2
 
@@ -45,10 +45,10 @@ def sho_frame(frame, face_locations):
         for (top, right, bottom, left) in face_locations:
             cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), 3)
     
-    # 确保颜色转换为RGB到BGR
+    # Transform the frame from BGR to RGB
     RGB_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     cv2.imshow('Frame', RGB_frame)
 
 def cleanup():
-    picam2.stop()  # 停止摄像头
-    cv2.destroyAllWindows()  # 清理OpenCV窗口
+    picam2.stop()  # Stop the camera
+    cv2.destroyAllWindows()  # Clean up any open windows

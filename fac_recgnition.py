@@ -3,15 +3,15 @@ import cv2
 import face_recognition
 from aud_speeking import speak
 
-# 帧数记录和限制
+# Frames per second
 frame_count = 0
-precess_per_n_frames = 3  # 每10帧处理一次
+precess_per_n_frames = 3  # Process every n frames
 
-# 存储所有已知人脸编码和对应的姓名
+# Storage the last known face location
 known_face_encodings = []
 known_face_names = []
 
-# 常量定义
+# Define the path to the directory containing the known faces
 KNOWN_FACES_DIR = "/home/Pi/Codes/Fce Recn/Known_Faces"
 
 def load_known_faces(known_faces_dir=KNOWN_FACES_DIR):
@@ -30,7 +30,7 @@ def load_known_faces(known_faces_dir=KNOWN_FACES_DIR):
                     face_encodings = face_recognition.face_encodings(image)
 
                     if face_encodings:
-                        known_face_encodings.append(face_encodings[0])  # 只取第一张脸的编码
+                        known_face_encodings.append(face_encodings[0])  # Pick the first face encoding in the image
                         known_face_names.append(person_name)
         print(f"Loaded {len(known_face_names)} faces from {known_faces_dir}")
     except Exception as e:
@@ -38,32 +38,32 @@ def load_known_faces(known_faces_dir=KNOWN_FACES_DIR):
 
 def recognize_faces(frame):
     """
-    每10帧识别一次
+    Recognize faces in the given frame.
     """
     global frame_count
     frame_count += 1
 
-    # 修正帧率限制逻辑
+    # Frame processing
     if frame_count % precess_per_n_frames != 0:
         return [], []
 
     """
-    检测并识别人脸，返回人名和人脸位置
+    Detect faces in the frame and encode them.
     """
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # 将BGR转换为RGB
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # Transform the frame to RGB
     face_locations = face_recognition.face_locations(rgb_frame)
     encoding_result = face_recognition.face_encodings(rgb_frame, face_locations)
 
     names = []
     for face_encoding in encoding_result:
-        # 检查每张检测到的人脸是否与已知人脸匹配
+        # Check if the face is a match to any known face
         matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-        distances = face_recognition.face_distance(known_face_encodings, face_encoding)  # 获取距离
+        distances = face_recognition.face_distance(known_face_encodings, face_encoding)  # Calculate the confidence level
         name = "Unknown"
 
-        # 使用最小距离作为最佳匹配
+        # Pick the best match
         if any(matches):
-            best_match_index = distances.argmin() if distances[distances < 0.6].size > 0 else None  # 设定距离阈值
+            best_match_index = distances.argmin() if distances[distances < 0.6].size > 0 else None  # Set the threshold
             if best_match_index is not None and matches[best_match_index]:
                 name = known_face_names[best_match_index]
 
@@ -73,10 +73,10 @@ def recognize_faces(frame):
 
 def add_new_face(new_name, frame, known_faces_dir=KNOWN_FACES_DIR):
     """
-    通过摄像头图像捕捉并保存新的人脸
-    name: 新增人脸的名字
-    frame: 当前摄像头画面
-    known_faces_dir: 已知人脸存储路径
+    Capture and save a new face image.
+    name: name of the person
+    frame: the frame containing the face
+    known_faces_dir: path to the directory containing known faces
     """
     # 先检测人脸是否存在
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -91,18 +91,18 @@ def add_new_face(new_name, frame, known_faces_dir=KNOWN_FACES_DIR):
     if not os.path.exists(person_dir):
         os.makedirs(person_dir)
 
-    # 保存新的人脸图片
+    # Save the new face image
     image_path = os.path.join(person_dir, f"{new_name}_{len(os.listdir(person_dir)) + 1}.jpg")
     cv2.imwrite(image_path, frame)
     print(f"New face image saved at: {image_path}")
 
-    # 加载保存的人脸并编码
+    # Load and encode the new face
     try:
         image = face_recognition.load_image_file(image_path)
         face_encodings = face_recognition.face_encodings(image)
 
         if face_encodings:
-            # 添加新的人脸编码和名字到已知人脸列表
+            # Add the new face encoding to the list
             known_face_encodings.append(face_encodings[0])
             known_face_names.append(new_name)
             print(f"New face added for {new_name}.")
