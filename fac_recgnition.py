@@ -63,7 +63,7 @@ def recognize_faces(frame):
 
         # Pick the best match
         if any(matches):
-            best_match_index = distances.argmin() if distances[distances < 0.6].size > 0 else None  # Set the threshold
+            best_match_index = distances.argmin() if distances[distances < 0.4].size > 0 else None  # Set the threshold
             if best_match_index is not None and matches[best_match_index]:
                 name = known_face_names[best_match_index]
 
