@@ -29,8 +29,8 @@ def tra_face(x, y, frame_width, frame_height):
     tilt_offset = face_center_y - camera_center_y
 
     # Factors to adjust the pan and tilt angles
-    pan_angle = 90 + pan_offset * 0.08  # Horizontal adjustment factor
-    tilt_angle = 90 + tilt_offset * 0.08  # Vertical adjustment factor
+    pan_angle = 90 + pan_offset * 0.07  # Horizontal adjustment factor
+    tilt_angle = 90 + tilt_offset * 0.07  # Vertical adjustment factor
 
     # Make sure the angles are within the valid range
     pan_angle = max(0, min(180, pan_angle))
