@@ -16,8 +16,8 @@ pan_angle = 90
 tilt_angle = 90
 pan_servo = kit.servo[0]  # 水平舵机
 tilt_servo = kit.servo[1]  # 垂直舵机
-pan_servo.angle = pan_angle
-tilt_servo.angle = tilt_angle
+#pan_servo.angle = pan_angle
+#tilt_servo.angle = tilt_angle
 
 def tra_face(x, y, frame_width, frame_height):
     global pan_angle, tilt_angle, camera_center_x, camera_center_y
@@ -29,8 +29,8 @@ def tra_face(x, y, frame_width, frame_height):
     tilt_offset = face_center_y - camera_center_y
 
     # 可以根据实际效果调节缩放因子
-    pan_angle = 90 + pan_offset * 0.1  # 调整因子
-    tilt_angle = 90 + tilt_offset * 0.1  # 调整因子
+    pan_angle = 90 + pan_offset * 0.08  # 调整因子
+    tilt_angle = 90 + tilt_offset * 0.08  # 调整因子
 
     # 确保角度在舵机支持的范围内
     pan_angle = max(0, min(180, pan_angle))

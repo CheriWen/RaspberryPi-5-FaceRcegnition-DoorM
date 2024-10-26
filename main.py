@@ -2,7 +2,7 @@ import cv2
 from picamera2 import Picamera2
 from fac_recgnition import recognize_faces, load_known_faces, add_new_face
 from cam_tracking import det_face, get_frame, sho_frame
-from aud_speeking import speak
+#from aud_speeking import speak
 import threading
 from concurrent.futures import ThreadPoolExecutor
 import queue
@@ -72,7 +72,7 @@ def handle_recognition_results(names, face_locations, frame):
             # 打开门
             open_door()
             # 将说话操作放入队列，批量处理
-            threading.Thread(target=speak, args=(f"Hello, {name}!",)).start()
+            #threading.Thread(target=speak, args=(f"Hello, {name}!",)).start()
         else:
             print("I don't know you.")
             print("Leave or press the CorrectKey to add a new face.")
@@ -82,10 +82,10 @@ def handle_recognition_results(names, face_locations, frame):
                 new_name = input("Enter the name of the new person: ")
                 if add_new_face(new_name, frame):
                     print(f"New person {new_name} added!")
-                    threading.Thread(target=speak, args=(f"New person {new_name} added!",)).start()
+                    #threading.Thread(target=speak, args=(f"New person {new_name} added!",)).start()
                 else:
                     print(f"Failed to add new face.")
-                    threading.Thread(target=speak, args=(f"Failed to add new face.",)).start()
+                    #threading.Thread(target=speak, args=(f"Failed to add new face.",)).start()
 
 if __name__ == '__main__':
     main()

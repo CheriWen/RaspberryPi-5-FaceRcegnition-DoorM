@@ -5,7 +5,7 @@ from aud_speeking import speak
 
 # 帧数记录和限制
 frame_count = 0
-precess_per_n_frames = 10  # 每10帧处理一次
+precess_per_n_frames = 3  # 每10帧处理一次
 
 # 存储所有已知人脸编码和对应的姓名
 known_face_encodings = []
@@ -84,7 +84,7 @@ def add_new_face(new_name, frame, known_faces_dir=KNOWN_FACES_DIR):
 
     if not face_encodings:
         print("No face detected for saving.")
-        speak("No face detected for saving.")
+        #speak("No face detected for saving.")
         return False
 
     person_dir = os.path.join(known_faces_dir, new_name)
@@ -106,11 +106,11 @@ def add_new_face(new_name, frame, known_faces_dir=KNOWN_FACES_DIR):
             known_face_encodings.append(face_encodings[0])
             known_face_names.append(new_name)
             print(f"New face added for {new_name}.")
-            speak(f"New face added for {new_name}.")
+            #speak(f"New face added for {new_name}.")
             return True
         else:
             print(f"Failed to encode face for {new_name}.")
-            speak(f"Failed to encode face for {new_name}.")
+            #speak(f"Failed to encode face for {new_name}.")
             return False
     except Exception as e:
         print(f"Error adding new face: {e}")
