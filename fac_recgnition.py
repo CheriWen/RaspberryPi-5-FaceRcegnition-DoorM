@@ -12,7 +12,7 @@ known_face_encodings = []
 known_face_names = []
 
 # Define the path to the directory containing the known faces
-KNOWN_FACES_DIR = "/home/Pi/Codes/Fce Recn/Known_Faces"
+KNOWN_FACES_DIR = "/home/Pi/Codes/RaspberryPi-5-FaceRcegnition-DoorM/Known_Faces"
 
 def load_known_faces(known_faces_dir=KNOWN_FACES_DIR):
     """
