@@ -43,7 +43,7 @@ def get_frame():
 def sho_frame(frame, face_locations):
     if face_locations:
         for (top, right, bottom, left) in face_locations:
-            cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), 3)
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 3)
     
     # Transform the frame from BGR to RGB
     RGB_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)

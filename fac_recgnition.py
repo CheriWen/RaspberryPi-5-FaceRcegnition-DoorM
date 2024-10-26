@@ -1,7 +1,7 @@
 import os
 import cv2
 import face_recognition
-from aud_speeking import speak
+#from aud_speeking import speak
 
 # Frames per second
 frame_count = 0
