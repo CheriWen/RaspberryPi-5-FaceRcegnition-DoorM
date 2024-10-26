@@ -35,7 +35,7 @@ def det_face(face_locations):
 
 def get_frame():
     try:
-        return picam2.capture_array()
+        return cv2.flip(picam2.capture_array(), 1)
     except Exception as e:
         print(f"Error capturing frame: {e}")
         return None
