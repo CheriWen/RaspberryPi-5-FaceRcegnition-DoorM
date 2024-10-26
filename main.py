@@ -43,11 +43,11 @@ def main():
                     names, face_locations = result_queue.get()
                     handle_recognition_results(names, face_locations, frame)
 
-                # 人脸跟踪
-                if face_locations:  # 确保只在有识别结果时调用
-                    det_face(face_locations)
-                    tra_face(face_locations)
-
+                    # 人脸跟踪
+                    if face_locations:   
+                        print(face_locations)
+                        det_face(face_locations)
+                        
                 # 显示带有人脸位置的帧
                 sho_frame(frame, face_locations)
 
@@ -62,7 +62,7 @@ def main():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
     finally:
-        cv2.destroyAllWindows()  # 清理OpenCV窗口
+        cv2.destroyAllWindows
 
 def handle_recognition_results(names, face_locations, frame):
     """处理识别结果"""

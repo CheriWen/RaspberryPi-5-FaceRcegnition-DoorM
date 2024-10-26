@@ -10,6 +10,7 @@ frame_height = 480
 
 def det_face(face_locations):
     if face_locations:
+        '''
         # 优先选择距离中心点最近的人脸
         center_x = frame_width // 2
         center_y = frame_height // 2
@@ -19,6 +20,12 @@ def det_face(face_locations):
         ))
 
         (top, right, bottom, left) = closest_face
+        center_x = (left + right) // 2
+        center_y = (top + bottom) // 2
+        tra_face(center_x, center_y, frame_width, frame_height)
+        '''
+        print(face_locations)
+        (top, right, bottom, left) = max(face_locations, key=lambda box: (box[1] - box[3]) * (box[2] - box[0]))
         center_x = (left + right) // 2
         center_y = (top + bottom) // 2
         tra_face(center_x, center_y, frame_width, frame_height)
