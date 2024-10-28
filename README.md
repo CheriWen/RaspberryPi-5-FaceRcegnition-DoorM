@@ -48,8 +48,11 @@ aud_speaking.py: Voice feedback module for recognition announcements and new use
 rel_control.py: Relay control module to manage door lock operation.
 
 ## Usage
-Start the System: Run ```bash sudo python3 main.py
-``` to activate facial recognition and tracking.
+Start the System: Run 
+```bash
+sudo python3 main.py
+```
+to activate facial recognition and tracking.
 Add New User: When prompted as an "Unknown User," press a and enter the new user's name to add their face to the system.
 Door Control: The system opens the door when a known user is detected and automatically locks after a delay.
 
