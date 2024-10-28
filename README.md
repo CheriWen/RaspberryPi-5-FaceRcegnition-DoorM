@@ -40,12 +40,12 @@ This project is a smart door access system based on Raspberry Pi 5, using OpenCV
     to start the system.
 
 ## Code Structure
-main.py: The main program file that controls initialization and main logic.
-cam_tracking.py: Face tracking and servo control module, adjusting the camera based on face location.
-fac_recognition.py: Facial recognition module for loading known faces and detecting faces in the camera feed.
-ser_control.py: Servo control module to adjust the camera angle based on detected face position.
-aud_speaking.py: Voice feedback module for recognition announcements and new user prompts.
-rel_control.py: Relay control module to manage door lock operation.
+- main.py: The main program file that controls initialization and main logic.
+- cam_tracking.py: Face tracking and servo control module, adjusting the camera based on face location.
+- fac_recognition.py: Facial recognition module for loading known faces and detecting faces in the camera feed.
+- ser_control.py: Servo control module to adjust the camera angle based on detected face position.
+- aud_speaking.py: Voice feedback module for recognition announcements and new user prompts.
+- rel_control.py: Relay control module to manage door lock operation.
 
 ## Usage
 Start the System: Run 
